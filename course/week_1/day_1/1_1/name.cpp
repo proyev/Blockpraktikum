@@ -25,5 +25,16 @@ int main()//int argc - arg count -
     std::cout << std::endl;
 
     printNameAndAge(firstName, lastName, age);
+
+    if (age < 18){
+        std::cout << "Your are a baby!" << std::endl;
+    }else if(age < 30){
+        std::cout << "You are quite young" << std::endl;
+    }else if(age < 50){
+        std::cout << "Getting wiser" << std::endl;
+    }else{
+        std::cout << "You've seen stuff" << std::endl;
+    }
+
     return 0;
 }
