@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/1_5.dir/main.cpp.o CMakeFiles/1_5.dir/fizzbuzz.cpp.o  -o 1_5 
