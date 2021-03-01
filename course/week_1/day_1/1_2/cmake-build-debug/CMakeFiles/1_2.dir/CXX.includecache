@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/getNumber.h
+iostream
+-
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/numberGame.cpp
+iostream
+-
+getNumber.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/getNumber.h
+playGame.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/playGame.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/playGame.cpp
+playGame.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/playGame.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/1_2/playGame.h
+iostream
+-
+

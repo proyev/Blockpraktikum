@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/1_2.dir/numberGame.cpp.o CMakeFiles/1_2.dir/getNumber.cpp.o CMakeFiles/1_2.dir/playGame.cpp.o  -o 1_2 
