@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/name.dir/name.cpp.o CMakeFiles/name.dir/printNameAndAge.cpp.o  -o name 
