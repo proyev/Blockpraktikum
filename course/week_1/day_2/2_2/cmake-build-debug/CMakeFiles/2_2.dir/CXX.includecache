@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_2/tasks/2_2/swap.cpp
+iostream
+-
+swapInt.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_2/tasks/2_2/swapInt.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_2/tasks/2_2/swapInt.h
+iostream
+-
+
