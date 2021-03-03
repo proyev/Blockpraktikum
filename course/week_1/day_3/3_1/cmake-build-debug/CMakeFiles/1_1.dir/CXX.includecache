@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/1_1/swap.cpp
+swap.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/1_1/swap.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/1_1/swap.h
+iostream
+-
+
