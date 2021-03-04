@@ -1,60 +1,49 @@
 #include "car.h"
-Car::Car()
-:   _id(""),
-    _name(""),
-    _tankCapacity(0.0),
-    _lpkm(0),
-    _tankState(0.0),
-    _kilometerstand(0.0)
-{
-    std::cout << "Default constructor was called" << std::endl;
-}
 
 Car::Car(const std::string &id,
          const std::string &name,
          const double &tankCapacity,
-         const double &lpkm):
-         _id(id),
-         _name(name),
-         _tankCapacity(tankCapacity),
-         _lpkm(lpkm)
-{
-    std::cout << "Constructor was called" << std::endl;
+         const double &consumption)
+         :
+            _id(id),
+            _name(name),
+            _tankCapacity(tankCapacity),
+            _consumption(consumption),
+            _fuel(0.0),
+            _mileage(0.0)
+            {
+
+    std::cout << "Car object was created" << std::endl;
+
 }
 
-bool Car::refuel(double &volume) {
+const double Car::fillLevel() {
+    return _fuel;
+}
 
-    if (tankCapacity - fillLevel() > volume){
-        tankState += volume;
+const double Car::reach() {
+    return _fuel / _consumption * 100;
+}
+
+const double Car::milage() {
+    return _mileage;
+}
+
+const bool Car::refuel(const double &volume) {
+    if (_tankCapacity - fillLevel() >= volume){
+        _fuel += volume;
         return true;
-    }else {
+    }else{
         return false;
     }
 }
 
-double Car::drive(double &distance) {
-
-    if (reach() < distance){
-        kilometerstand += distance;
-        tankState -= distance/100 * lpkm;
-        return distance;
+const bool Car::drive(const double &distance) {
+    if (reach() >= distance){
+        _fuel -= distance / 100 * _consumption;
+        _mileage += distance;
+        return true;
     }else{
-        distance = reach();
-        kilometerstand += distance;
-        tankState = 0;
-        return distance;
+        return false;
     }
-
-}
-
-double Car::milage() {
-    return kilometerstand;
-}
-
-double Car::reach() {
-    return tankState/lpkm * 100;
-}
-
-double Car::fillLevel() {
-    return tankState;
 }

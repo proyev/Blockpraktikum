@@ -1,15 +1,52 @@
-#include <iostream>
 #include "car.h"
-const std::string id;
-const std::string name;
-const double tankCapacity;
-const double lpkm;
-double tankState;
-double kilometerstand;
 
-int main() {
-    Car car("ABC", "VW", 50, 5);
+int main(){
+    Car car("AA1234",
+            "VW Polo",
+            50.0,
+            5.0);
 
+    car.refuel(20.0);
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+            << "Mileage: " << car.milage() << "\n"
+            << "Reach: " << car.reach() << std::endl;
+
+    car.drive(10.0);
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
+
+    car.refuel(50.0 - car.fillLevel());
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
+
+    car.drive(car.reach());
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
+
+    car.drive(10.0);
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
+
+    car.refuel(50.0 - car.fillLevel());
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
+
+    car.refuel(10.0);
+
+    std::cout << "Fuel: " << car.fillLevel() << "\n"
+              << "Mileage: " << car.milage() << "\n"
+              << "Reach: " << car.reach() << std::endl;
 
     return 0;
 }

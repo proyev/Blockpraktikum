@@ -3,30 +3,30 @@
 #include <iostream>
 #include <string>
 
-    class Car{
-        private:
-            const std::string &_id;
-            const std::string &_name;
-            const double &_tankCapacity;
-            const double &_lpkm;
-            double _tankState;
-            double _kilometerstand;
+class Car{
+    public:
+        Car(const std::string &id,
+            const std::string &name,
+            const double &tankCapacity,
+            const double &consumption);
 
-        public:
-            Car ();
-            Car (const std::string &id = "",
-                 const std::string &name = "",
-                 const double &tankCapacity = 0.0,
-                 const double &lpkm = 0.0,
-                 double tankState = 0.0,
-                 double kilometerstand = 0.0);
+        const bool refuel(const double &volume);
+        const bool drive(const double &distance);
 
-            double fillLevel();
-            double reach();
-            double milage();
+        const double fillLevel();
+        const double reach();
+        const double milage();
 
-            bool refuel(double &volume);
-            double drive(double &distance);
+    private:
+        const std::string _id;
+        const std::string _name;
+        const double _tankCapacity;
+        const double _consumption;
+        double _fuel;
+        double _mileage;
+
+
+
 
 };
 
