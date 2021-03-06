@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/4_1.dir/cartest3.cpp.o CMakeFiles/4_1.dir/citycar.cpp.o CMakeFiles/4_1.dir/sportscar.cpp.o CMakeFiles/4_1.dir/car.cpp.o  -o 4_1 
