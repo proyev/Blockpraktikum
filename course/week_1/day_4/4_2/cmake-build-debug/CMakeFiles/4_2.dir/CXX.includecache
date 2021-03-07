@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/car.cpp
+citycar.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/citycar.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/car.h
+iostream
+-
+string
+-
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/citycar.cpp
+citycar.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/citycar.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/citycar.h
+car.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/car.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/sportscar.cpp
+sportscar.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/sportscar.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/sportscar.h
+car.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_4/4_2/car.h
+
