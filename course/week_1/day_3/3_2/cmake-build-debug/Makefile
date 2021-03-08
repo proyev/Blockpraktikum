@@ -143,32 +143,32 @@ depend:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/build
 .PHONY : 3_2/fast
 
-main.o: main.cpp.o
+test_linkedlist.o: test_linkedlist.cpp.o
 
-.PHONY : main.o
+.PHONY : test_linkedlist.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/main.cpp.o
-.PHONY : main.cpp.o
+test_linkedlist.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/test_linkedlist.cpp.o
+.PHONY : test_linkedlist.cpp.o
 
-main.i: main.cpp.i
+test_linkedlist.i: test_linkedlist.cpp.i
 
-.PHONY : main.i
+.PHONY : test_linkedlist.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/main.cpp.i
-.PHONY : main.cpp.i
+test_linkedlist.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/test_linkedlist.cpp.i
+.PHONY : test_linkedlist.cpp.i
 
-main.s: main.cpp.s
+test_linkedlist.s: test_linkedlist.cpp.s
 
-.PHONY : main.s
+.PHONY : test_linkedlist.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/main.cpp.s
-.PHONY : main.cpp.s
+test_linkedlist.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/3_2.dir/build.make CMakeFiles/3_2.dir/test_linkedlist.cpp.s
+.PHONY : test_linkedlist.cpp.s
 
 # Help Target
 help:
@@ -179,9 +179,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... 3_2"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... test_linkedlist.o"
+	@echo "... test_linkedlist.i"
+	@echo "... test_linkedlist.s"
 .PHONY : help
 
 

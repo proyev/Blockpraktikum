@@ -77,27 +77,27 @@ include CMakeFiles/3_2.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/3_2.dir/flags.make
 
-CMakeFiles/3_2.dir/main.cpp.o: CMakeFiles/3_2.dir/flags.make
-CMakeFiles/3_2.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/3_2.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3_2.dir/main.cpp.o -c "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/main.cpp"
+CMakeFiles/3_2.dir/test_linkedlist.cpp.o: CMakeFiles/3_2.dir/flags.make
+CMakeFiles/3_2.dir/test_linkedlist.cpp.o: ../test_linkedlist.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/3_2.dir/test_linkedlist.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3_2.dir/test_linkedlist.cpp.o -c "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/test_linkedlist.cpp"
 
-CMakeFiles/3_2.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3_2.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/main.cpp" > CMakeFiles/3_2.dir/main.cpp.i
+CMakeFiles/3_2.dir/test_linkedlist.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3_2.dir/test_linkedlist.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/test_linkedlist.cpp" > CMakeFiles/3_2.dir/test_linkedlist.cpp.i
 
-CMakeFiles/3_2.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3_2.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/main.cpp" -o CMakeFiles/3_2.dir/main.cpp.s
+CMakeFiles/3_2.dir/test_linkedlist.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3_2.dir/test_linkedlist.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/test_linkedlist.cpp" -o CMakeFiles/3_2.dir/test_linkedlist.cpp.s
 
 # Object files for target 3_2
 3_2_OBJECTS = \
-"CMakeFiles/3_2.dir/main.cpp.o"
+"CMakeFiles/3_2.dir/test_linkedlist.cpp.o"
 
 # External object files for target 3_2
 3_2_EXTERNAL_OBJECTS =
 
-3_2: CMakeFiles/3_2.dir/main.cpp.o
+3_2: CMakeFiles/3_2.dir/test_linkedlist.cpp.o
 3_2: CMakeFiles/3_2.dir/build.make
 3_2: CMakeFiles/3_2.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_3/3_2/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable 3_2"
