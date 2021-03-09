@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/5_2.dir/map.cpp.o  -o 5_2 
