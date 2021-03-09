@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/day_5/5_1_1/main.cpp
+iostream
+-
+vector
+-
+list
+-
+chrono
+-
+algorithm
+-
+random
+-
+
