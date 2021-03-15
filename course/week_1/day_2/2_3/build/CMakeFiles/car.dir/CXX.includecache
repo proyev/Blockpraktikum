@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/github/Blockpraktikum/course/week_1/day_2/2_3/src/car.cpp
+car.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/github/Blockpraktikum/course/week_1/day_2/2_3/src/car.h
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/github/Blockpraktikum/course/week_1/day_2/2_3/src/car.h
+iostream
+-
+string
+-
+
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/github/Blockpraktikum/course/week_1/day_2/2_3/src/cartest.cpp
+car.h
+/home/jason/Desktop/Courses/Uni-stuff/Block C++/github/Blockpraktikum/course/week_1/day_2/2_3/src/car.h
+
