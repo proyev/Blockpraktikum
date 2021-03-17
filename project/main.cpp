@@ -1,11 +1,11 @@
-#include "battleship_gui.h"
+#include "battleships.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    battleship_gui w;
+    battleships w;
     w.show();
     return a.exec();
 }
