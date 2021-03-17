@@ -28,8 +28,9 @@ private slots:
 
         signals:
             void positionPlayer(int i, int j);
-//            void positionRival(int i, int j);
 
+            void testSignal(int a);
+//            void positionRival(int i, int j);
 
 };
 #endif // BATTLESHIPS_H

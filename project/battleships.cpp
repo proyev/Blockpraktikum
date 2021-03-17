@@ -20,7 +20,6 @@ battleships::battleships(QWidget *parent)
             _fieldRival[i][j]->move(465 + i*25, 35 + j*25);
             _fieldPlayer[i][j]->show();
             _fieldRival[i][j]->show();
-
             connect(_fieldPlayer[i][j], &QPushButton::clicked,
                     this, [=](){
                             emit positionPlayer(i, j);
@@ -49,6 +48,7 @@ battleships::battleships(QWidget *parent)
 void battleships::setPositionPlayer(int i, int j){
     ui->posX->setText(QString::number(i));
     ui->poxY->setText(QString::number(j));
+//    emit testSignal(5);
 }
 
 battleships::~battleships()
