@@ -26,11 +26,38 @@ private slots:
             void setPositionPlayer(int i, int j);
 //            void setPositionRival(int i, int j);
 
+
+            void createBattleship();
+            void createCruiser();
+            void createDestroyer();
+            void createSubmarine();
+            void settingGameInterpreter(int battleshipCounter,
+                                        int cruiserCounter,
+                                        int destroyerCounter,
+                                        int submarineCounter);
+
+            void movePlayerInterpreter(int posX, int posY, char status);
+            void moveRivalInterpreter(int posX, int posY, char status);
+
+            void testDrawer();//for tests only
+
         signals:
             void positionPlayer(int i, int j);
+            void positionRival(int i, int j);
+
+            void shipDrawer(int i, int j, int lenght);
+
+            void createShip(int length); // sends the info about the type of ship to be created
+
+
+
 
             void testSignal(int a);
 //            void positionRival(int i, int j);
+public slots:
+            void drawShip(int startX, int startY,
+                          int endX, int endY,
+                          int length); //slot to draw a ship later on - try and combine it with logic
 
 };
 #endif // BATTLESHIPS_H

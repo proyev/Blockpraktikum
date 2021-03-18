@@ -11,8 +11,22 @@ int main(int argc, char *argv[])
     w.show();
 
     Logic *logic = new Logic;
+
     QWidget::connect(&w, &battleships::positionPlayer,
                      logic, &Logic::testSlot);
+
+    QWidget::connect(&w, &battleships::createShip,
+                     logic, &Logic::createShip);
+    QWidget::connect(&w, &battleships::positionPlayer,
+                     logic, &Logic::getStartPosition);
+
+    QWidget::connect(&w, &battleships::positionRival,
+                     logic, &Logic::getEndPosition);
+
+//    QWidget::connect(&logic,
+
+    QWidget::connect(logic, &Logic::draw,
+                     &w, &battleships::drawShip);
 
 
     return a.exec();
