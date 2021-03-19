@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QObject>
 #include <QPushButton>
+#include <string>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class battleships; }
@@ -49,15 +50,25 @@ private slots:
 
             void createShip(int length); // sends the info about the type of ship to be created
 
-
+            void shipOrientation(char orientation);
 
 
             void testSignal(int a);
 //            void positionRival(int i, int j);
 public slots:
             void drawShip(int startX, int startY,
-                          int endX, int endY,
-                          int length); //slot to draw a ship later on - try and combine it with logic
+                          char orientation,
+                          int length);//slot to draw a ship later on - try and combine it with logic
+            void destroyedShips(int length);
+
+            void horizontalOrientation();
+            void verticalOrientation();
+
+            void connectSlot();
+            void disconnectSlot();
+            void serverSlot();
+            void clientSlot();
+            void saveName();
 
 };
 #endif // BATTLESHIPS_H
