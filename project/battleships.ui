@@ -6,30 +6,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
-    <height>300</height>
+    <width>900</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>735</width>
-    <height>300</height>
+    <width>900</width>
+    <height>350</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>735</width>
-    <height>300</height>
+    <width>900</width>
+    <height>350</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>battleships</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">* { background-color: rgb(125, 125, 125)}</string>
+  </property>
   <widget class="QPushButton" name="createBattleshipButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>30</y>
+     <x>325</x>
+     <y>35</y>
      <width>125</width>
      <height>25</height>
     </rect>
@@ -49,9 +52,9 @@
       <colorrole role="Button">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -121,18 +124,18 @@
       <colorrole role="Base">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
       <colorrole role="Window">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -195,9 +198,9 @@
       <colorrole role="Button">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -267,18 +270,18 @@
       <colorrole role="Base">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>255</red>
-         <green>255</green>
-         <blue>255</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
       <colorrole role="Window">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -341,9 +344,9 @@
       <colorrole role="Button">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -413,18 +416,18 @@
       <colorrole role="Base">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
       <colorrole role="Window">
        <brush brushstyle="SolidPattern">
         <color alpha="255">
-         <red>239</red>
-         <green>239</green>
-         <blue>239</blue>
+         <red>0</red>
+         <green>125</green>
+         <blue>0</blue>
         </color>
        </brush>
       </colorrole>
@@ -486,8 +489,8 @@
   <widget class="QPushButton" name="createCruiserButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>60</y>
+     <x>325</x>
+     <y>70</y>
      <width>100</width>
      <height>25</height>
     </rect>
@@ -944,8 +947,8 @@
   <widget class="QPushButton" name="createDestroyerButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>90</y>
+     <x>325</x>
+     <y>105</y>
      <width>75</width>
      <height>25</height>
     </rect>
@@ -1402,11 +1405,20 @@
   <widget class="QPushButton" name="startButton">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>240</y>
-     <width>101</width>
-     <height>41</height>
+     <x>325</x>
+     <y>235</y>
+     <width>125</width>
+     <height>50</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>Start</string>
@@ -1415,8 +1427,8 @@
   <widget class="QPushButton" name="createSubmarineButton">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>120</y>
+     <x>325</x>
+     <y>140</y>
      <width>50</width>
      <height>25</height>
     </rect>
@@ -1873,8 +1885,8 @@
   <widget class="QLabel" name="cruiserCounter">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>60</y>
+     <x>430</x>
+     <y>70</y>
      <width>25</width>
      <height>25</height>
     </rect>
@@ -1886,8 +1898,8 @@
   <widget class="QLabel" name="submarineCounter">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>120</y>
+     <x>430</x>
+     <y>140</y>
      <width>25</width>
      <height>25</height>
     </rect>
@@ -1899,8 +1911,8 @@
   <widget class="QLabel" name="destroyerCounter">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>90</y>
+     <x>430</x>
+     <y>105</y>
      <width>25</width>
      <height>25</height>
     </rect>
@@ -1912,8 +1924,8 @@
   <widget class="QLabel" name="posX">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>160</y>
+     <x>510</x>
+     <y>310</y>
      <width>101</width>
      <height>21</height>
     </rect>
@@ -1925,8 +1937,8 @@
   <widget class="QLabel" name="poxY">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>180</y>
+     <x>630</x>
+     <y>310</y>
      <width>101</width>
      <height>21</height>
     </rect>
@@ -1935,11 +1947,264 @@
     <string>Position y: </string>
    </property>
   </widget>
-  <widget class="QLabel" name="statusLabel">
+  <widget class="QLabel" name="destroyedShipsLabel">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>200</y>
+     <x>350</x>
+     <y>10</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>170</y>
+     <width>125</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <widget class="QRadioButton" name="verticalOptionButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>112</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>vertical</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="horizontalOptionButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>112</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>horizontal</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="ipLabel">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>40</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>IP field</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ipInput">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>60</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="portInput">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>110</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="portLabel">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>90</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Port field</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="connectButton">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>180</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="disconnectButton">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>180</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="serverButton">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>150</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+   <property name="text">
+    <string>Server</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="clientButton">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>150</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+   <property name="text">
+    <string>Client</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nicknameInput">
+   <property name="geometry">
+    <rect>
+     <x>35</x>
+     <y>310</y>
+     <width>125</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="saveNameButton">
+   <property name="geometry">
+    <rect>
+     <x>185</x>
+     <y>310</y>
+     <width>100</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">* { background-color: rgb(255, 255, 255)}</string>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="nameLabel">
+   <property name="geometry">
+    <rect>
+     <x>35</x>
+     <y>285</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enter your name</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="gameStatusLabel">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>10</y>
      <width>67</width>
      <height>17</height>
     </rect>
