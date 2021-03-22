@@ -25,38 +25,33 @@ private:
 
 private slots:
             void setPositionPlayer(int i, int j);
-//            void setPositionRival(int i, int j);
-
 
             void createBattleship();
             void createCruiser();
             void createDestroyer();
             void createSubmarine();
-            void settingGameInterpreter(int battleshipCounter,
-                                        int cruiserCounter,
-                                        int destroyerCounter,
-                                        int submarineCounter);
+
+            void blockPlayerField();
+            void unblockPlayerField();
+            void blockRivalField();
+            void unblockRivalField();
 
             void movePlayerInterpreter(int posX, int posY, char status);
             void moveRivalInterpreter(int posX, int posY, char status);
-
-            void testDrawer();//for tests only
 
         signals:
             void positionPlayer(int i, int j);
             void positionRival(int i, int j);
 
-            void shipDrawer(int i, int j, int lenght);
-
             void createShip(int length); // sends the info about the type of ship to be created
-
             void shipOrientation(char orientation);
+            void checkCoordinates(int startX, int startY);
 
+            void blockField();
+            void unblockField();
 
-            void testSignal(int a);
-//            void positionRival(int i, int j);
 public slots:
-            void drawShip(int startX, int startY,
+            void gameSetup(int startX, int startY,
                           char orientation,
                           int length);//slot to draw a ship later on - try and combine it with logic
             void destroyedShips(int length);
@@ -64,11 +59,12 @@ public slots:
             void horizontalOrientation();
             void verticalOrientation();
 
+            void status(char status);
+
             void connectSlot();
             void disconnectSlot();
             void serverSlot();
             void clientSlot();
             void saveName();
-
 };
 #endif // BATTLESHIPS_H
