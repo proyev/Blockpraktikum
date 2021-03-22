@@ -1947,70 +1947,21 @@
     <string>Position y: </string>
    </property>
   </widget>
-  <widget class="QLabel" name="destroyedShipsLabel">
+  <widget class="QLabel" name="statusLabel">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>270</x>
      <y>10</y>
-     <width>67</width>
-     <height>17</height>
+     <width>240</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Choose the orientation of the ship</string>
    </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>325</x>
-     <y>170</y>
-     <width>125</width>
-     <height>60</height>
-    </rect>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
-   <property name="title">
-    <string/>
-   </property>
-   <widget class="QRadioButton" name="verticalOptionButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>112</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <underline>false</underline>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>vertical</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="horizontalOptionButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>112</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <underline>false</underline>
-     </font>
-    </property>
-    <property name="text">
-     <string>horizontal</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QLabel" name="ipLabel">
    <property name="geometry">
@@ -2200,17 +2151,52 @@
     <string>Enter your name</string>
    </property>
   </widget>
-  <widget class="QLabel" name="gameStatusLabel">
+  <widget class="QRadioButton" name="verticalOptionButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>10</y>
-     <width>67</width>
-     <height>17</height>
+     <x>325</x>
+     <y>180</y>
+     <width>125</width>
+     <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>vertical</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="horizontalOptionButton">
+   <property name="geometry">
+    <rect>
+     <x>325</x>
+     <y>205</y>
+     <width>125</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="text">
+    <string>horizontal</string>
    </property>
   </widget>
  </widget>
