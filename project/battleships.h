@@ -32,7 +32,8 @@ private slots:
             void createSubmarine();
 
             void blockPlayerField();
-            void unblockPlayerField();
+            void unblockPlayerField(int startX, int startY,
+                                    int endX, int endY);
             void blockRivalField();
             void unblockRivalField();
 
@@ -49,7 +50,13 @@ private slots:
 
             void blockField();
             void unblockField();
+            void playerHP();
+            void rivalHP();
+            void statusSignal(char satus);
 
+            void connectSignal(QString ip, QString port);
+            void disconnectSignal();
+            void isClient(bool info);
 public slots:
             void gameSetup(int startX, int startY,
                           char orientation,
@@ -62,9 +69,15 @@ public slots:
             void status(char status);
 
             void connectSlot();
+            void connectionSatus(bool connection);
             void disconnectSlot();
             void serverSlot();
             void clientSlot();
             void saveName();
+
+            //void turn(bool turn);
+
+            void updatePlayerHP();
+            void updateRivalHP();
 };
 #endif // BATTLESHIPS_H
