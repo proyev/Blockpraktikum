@@ -24,21 +24,18 @@ private:
     QPushButton *_fieldRival[10][10];
 
 private slots:
-            void setPositionPlayer(int i, int j);
-
+            void horizontalOrientation();
+            void verticalOrientation();
             void createBattleship();
             void createCruiser();
             void createDestroyer();
             void createSubmarine();
 
             void blockPlayerField();
-            void unblockPlayerField(int startX, int startY,
-                                    int endX, int endY);
             void blockRivalField();
-            void unblockRivalField();
 
-            void movePlayerInterpreter(int posX, int posY, char status);
-            void moveRivalInterpreter(int posX, int posY, char status);
+            void updatePlayerHP();
+            void updateRivalHP();
 
         signals:
             void positionPlayer(int i, int j);
@@ -52,9 +49,11 @@ private slots:
             void unblockField();
             void playerHP();
             void rivalHP();
+            void playerTurn();
             void statusSignal(char satus);
 
             void connectSignal(QString ip, QString port);
+            void startGame();
             void disconnectSignal();
             void isClient(bool info);
 public slots:
@@ -62,22 +61,18 @@ public slots:
                           char orientation,
                           int length);//slot to draw a ship later on - try and combine it with logic
             void destroyedShips(int length);
+            void placementValidation(bool valid);
 
-            void horizontalOrientation();
-            void verticalOrientation();
-
+            void turn(bool turn);
             void status(char status);
 
-            void connectSlot();
             void connectionSatus(bool connection);
-            void disconnectSlot();
-            void serverSlot();
-            void clientSlot();
-            void saveName();
 
-            //void turn(bool turn);
+            void unblockPlayerField(int startX, int startY,
+                                    int endX, int endY);
+            void unblockRivalField();
+            void movePlayerInterpreter(int posX, int posY, char status);
+            void moveRivalInterpreter(int posX, int posY, char status);
 
-            void updatePlayerHP();
-            void updateRivalHP();
 };
 #endif // BATTLESHIPS_H

@@ -3,6 +3,7 @@
 #include <QPalette>
 #include <QRadioButton>
 #include <QSignalBlocker>
+#include <QMessageBox>
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -34,27 +35,34 @@ battleships::battleships(QWidget *parent)
             connect(_fieldPlayer[i][j], &QPushButton::clicked,
                     this, [=](){
                             emit positionPlayer(i, j);
-                           // ui->posX->setText(QString::number(i));
-                           // ui->poxY->setText(QString::number(j));
                         });//when clicked - will send the coordinates to the logical part - required only for ship placement
-            /*connect(_fieldRival[i][j], &QPushButton::clicked,
-                    this, [=](){
-                            emit positionRival(i, j);
-                        });*///when clicked - will send the coordinates to the logical part - required only after the game start
             connect(_fieldRival[i][j], &QPushButton::clicked,
                     this, [=](){
                             emit positionRival(i, j);
             });//when clicked on the rival field, will get the position of the button clicked
         }
     }
+    battleships::setMinimumSize(900, 300);
+    battleships::setMaximumSize(900, 300);
 
-//    connect(this, &battleships::positionPlayer,
-//            [=](int i, int j){
-//        ui->posX->setText(QString::number(i));
-//        ui->poxY->setText(QString::number(j));
-//    });
-    this->_fieldRival[3][3]->setStyleSheet("* { background-color: rgb(0, 0, 255)}");
-    this->_fieldRival[7][8]->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
+    ui->createBattleshipButton->setDisabled(true);
+    ui->createCruiserButton->setDisabled(true);
+    ui->createDestroyerButton->setDisabled(true);
+    ui->createSubmarineButton->setDisabled(true);
+    connect(ui->horizontalOptionButton, &QRadioButton::clicked,
+            this, &battleships::horizontalOrientation);
+    connect(ui->verticalOptionButton, &QRadioButton::clicked,
+            this, &battleships::verticalOrientation);
+
+    connect(ui->createBattleshipButton, &QPushButton::clicked,
+            this, &battleships::createBattleship);
+    connect(ui->createCruiserButton, &QPushButton::clicked,
+            this, &battleships::createCruiser);
+    connect(ui->createDestroyerButton, &QPushButton::clicked,
+            this, &battleships::createDestroyer);
+    connect(ui->createSubmarineButton, &QPushButton::clicked,
+            this, &battleships::createSubmarine);
+
     ui->startButton->setDisabled(true);
     connect(ui->startButton, &QPushButton::clicked,
             this, &battleships::blockPlayerField); //blocks the field after the game started
@@ -69,17 +77,47 @@ battleships::battleships(QWidget *parent)
     connect(ui->startButton, &QPushButton::clicked,
             ui->startButton, &QPushButton::hide);
     connect(ui->startButton, &QPushButton::clicked,
+            this,[&](){
+        emit status('a');
+        emit startGame();//if doesn't work - try by-value
+    });
+    connect(ui->startButton, &QPushButton::clicked,
             ui->playerHP, &QPushButton::show);
     connect(ui->startButton, &QPushButton::clicked,
             ui->rivalHP, &QPushButton::show);
-
-    ui->createBattleshipButton->setDisabled(true);
-    ui->createCruiserButton->setDisabled(true);
-    ui->createDestroyerButton->setDisabled(true);
-    ui->createSubmarineButton->setDisabled(true);
-
+    connect(this, &battleships::playerTurn,
+            this, &battleships::unblockRivalField);
+    ui->connectButton->setDisabled(true);
     ui->disconnectButton->hide();
-    ui->clientButton->hide();
+    connect(ui->connectButton, &QPushButton::clicked,
+            this, [&](){
+        QString ip = ui->ipInput->text();
+        QString port = ui->portInput->text();
+        if (ip != "" && port != ""){
+            std::cout << "signal emited" << std::endl;
+            emit connectSignal(ip, port);
+        }else{
+            std::cout << "no info" << std::endl;
+
+        }
+    });
+
+    connect(ui->disconnectButton, &QPushButton::clicked,
+            this, [&](){
+        ui->disconnectButton->hide();
+        ui->connectButton->show();
+        emit disconnectSignal();
+    });
+    connect(ui->clientRadioButton, &QRadioButton::clicked,
+            this, [&](){
+        ui->connectButton->setDisabled(false);
+        emit isClient(true);
+    });
+    connect(ui->serverRadioButton, &QRadioButton::clicked,
+            this, [&](){
+        ui->connectButton->setDisabled(false);
+        emit isClient(false);
+    });
 
     ui->playerHP->setMaximumWidth(25);
     ui->playerHP->setMinimumWidth(25);
@@ -89,43 +127,43 @@ battleships::battleships(QWidget *parent)
     ui->rivalHP->setMinimumWidth(25);
     ui->rivalHP->setDisabled(true);
     ui->rivalHP->hide();
-    connect(this, &battleships::statusSignal,
-            this, &battleships::status);
-
     connect(this, &battleships::playerHP,
             this, &battleships::updatePlayerHP);
     connect(this, &battleships::rivalHP,
             this, &battleships::updateRivalHP);
 
-    connect(ui->connectButton, &QPushButton::clicked,
-            this, &battleships::connectSlot);
-    connect(ui->serverButton, &QPushButton::clicked,
-            this, &battleships::serverSlot);
-    connect(ui->disconnectButton, &QPushButton::clicked,
-            this, &battleships::disconnectSlot);
-    connect(ui->clientButton, &QPushButton::clicked,
-            this, &battleships::clientSlot);
+    connect(this, &battleships::statusSignal,
+            this, &battleships::status);
 
-    connect(ui->horizontalOptionButton, &QRadioButton::clicked,
-            this, &battleships::horizontalOrientation);
-    connect(ui->verticalOptionButton, &QRadioButton::clicked,
-            this, &battleships::verticalOrientation);
-
-    connect(this, &battleships::positionPlayer,
-            this, &battleships::setPositionPlayer);
-
-    connect(ui->createBattleshipButton, &QPushButton::clicked,
-            this, &battleships::createBattleship);
-    connect(ui->createCruiserButton, &QPushButton::clicked,
-            this, &battleships::createCruiser);
-    connect(ui->createDestroyerButton, &QPushButton::clicked,
-            this, &battleships::createDestroyer);
-    connect(ui->createSubmarineButton, &QPushButton::clicked,
-            this, &battleships::createSubmarine);
-
-
+    ui->hideChatButton->hide();
     connect(ui->saveNameButton, &QPushButton::clicked,
-            this, &battleships::saveName);//change to slot from logic
+            this, [&](){
+        ui->saveNameButton->hide();
+        QString name = ui->nicknameInput->text();
+        ui->statusLabel->setText(name);
+        ui->nicknameInput->setDisabled(true);
+    });//change to slot from logic
+    connect(ui->chatButton, &QPushButton::clicked,
+            this, [&](){
+        ui->chatButton->hide();
+        ui->hideChatButton->show();
+        battleships::setMaximumSize(1100, 300);
+        battleships::setMinimumSize(1100, 300);
+    });
+    connect(ui->chatMessage, &QLineEdit::returnPressed,
+            this, [&](){
+         QString name = ui->nicknameInput->text(),
+                 message = ui->chatMessage->text();
+         ui->chatMessage->clear();
+         ui->chatBox->append("<" + name + ">" + " " + message);
+    });
+    connect(ui->hideChatButton, &QPushButton::clicked,
+            this, [&](){
+        ui->chatButton->show();
+        ui->hideChatButton->hide();
+        battleships::setMaximumSize(900, 300);
+        battleships::setMinimumSize(900, 300);
+    });
 
     connect(this, &battleships::blockField,
             this, &battleships::blockPlayerField);
@@ -133,11 +171,29 @@ battleships::battleships(QWidget *parent)
      //       this, &battleships::unblockPlayerField); - should be first call from logic
 }
 
+void battleships::horizontalOrientation(){
+    char orientation = 'h';
+    ui->statusLabel->setText("Choose the size of the ship");
+    ui->createBattleshipButton->setDisabled(false);
+    ui->createCruiserButton->setDisabled(false);
+    ui->createDestroyerButton->setDisabled(false);
+    ui->createSubmarineButton->setDisabled(false);
+    emit shipOrientation(orientation);
+}
+void battleships::verticalOrientation(){
+    char orientation = 'v';
+    ui->statusLabel->setText("Choose the size of the ship");
+    ui->createBattleshipButton->setDisabled(false);
+    ui->createCruiserButton->setDisabled(false);
+    ui->createDestroyerButton->setDisabled(false);
+    ui->createSubmarineButton->setDisabled(false);
+    emit shipOrientation(orientation);
+}
+
 void battleships::createBattleship(){
     int length = 5;
     ui->statusLabel->setText("Choose the location");
     emit createShip(length);
-    //emit unblockPlayerField();
     //here should be connection to logic via emits of the new logical signals
 
 }
@@ -164,7 +220,11 @@ void battleships::createSubmarine(){
 }
 //this slot will draw the ship itself, by making changing the color of buttons
 //and making them 'pressed'
-//rename to game setting
+void battleships::placementValidation(bool valid){
+    if (!valid){
+        emit status('p');
+    }
+}
 void battleships::gameSetup(int startX, int startY,
                            char orientation,
                            int length){
@@ -324,9 +384,13 @@ void battleships::moveRivalInterpreter(int posX, int posY, char status){
         case('H'):
             battleships::_fieldPlayer[posX][posY]->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
             emit(playerHP());
+            emit statusSignal('t');
+            emit playerTurn();
             break;
         case('M'):
             battleships::_fieldPlayer[posX][posY]->setStyleSheet("* { background-color: rgb(0, 0, 255)}");
+            emit statusSignal('t');
+            emit playerTurn();
             break;
     }
 }
@@ -341,67 +405,74 @@ void battleships::movePlayerInterpreter(int posX, int posY, char status){
     }
 }
 
-void battleships::horizontalOrientation(){
-    char orientation = 'h';
-    ui->statusLabel->setText("Choose the size of the ship");
-    ui->createBattleshipButton->setDisabled(false);
-    ui->createCruiserButton->setDisabled(false);
-    ui->createDestroyerButton->setDisabled(false);
-    ui->createSubmarineButton->setDisabled(false);
-    emit shipOrientation(orientation);
-}
-void battleships::verticalOrientation(){
-    char orientation = 'v';
-    ui->statusLabel->setText("Choose the size of the ship");
-    ui->createBattleshipButton->setDisabled(false);
-    ui->createCruiserButton->setDisabled(false);
-    ui->createDestroyerButton->setDisabled(false);
-    ui->createSubmarineButton->setDisabled(false);
-    emit shipOrientation(orientation);
-}
-
-void battleships::setPositionPlayer(int i, int j){ //for testing purposes only - should be removed afterwards
-    ui->posX->setText("Position x: " + QString::number(i));
-    ui->poxY->setText("Position y: " + QString::number(j));
-}
-
 //for network connectivity
-void battleships::connectSlot(){
-    QString ip = ui->ipInput->text();
-    QString port = ui->portInput->text();
-    emit connectSignal(ip, port);
-}
 void battleships::connectionSatus(bool connection){
+    QMessageBox msgBox;
     if (connection){
         ui->connectButton->hide();
         ui->disconnectButton->show();
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("Connection established");
+        msgBox.setStandardButtons(QMessageBox::Close);
         emit statusSignal('c');
     }else{
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setText("Connection failed!");
+        msgBox.setStandardButtons(QMessageBox::Close);
         emit statusSignal('i');
     }
 }
-void battleships::disconnectSlot(){
-    ui->disconnectButton->hide();
-    ui->connectButton->show();
-    emit disconnectSignal();
-}
-void battleships::serverSlot(){
-    ui->serverButton->hide();
-    ui->clientButton->show();
-    emit isClient(false);
-}
-void battleships::clientSlot(){
-    ui->clientButton->hide();
-    ui->serverButton->show();
-    emit isClient(true);
-}
-void battleships::saveName(){
-    ui->saveNameButton->hide();
-    QString name = ui->nicknameInput->text();
-    ui->statusLabel->setText(name);
-}
+
 //for gameplay
-void battleships::status(char status){
+void battleships::turn(bool turn){ // change of the turns - start of the game only
+    if (turn){
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("You begin the game!");
+        msgBox.setStandardButtons(QMessageBox::Close);
+        emit status('t');
+    }
+}
+void battleships::destroyedShips(int length){ // will print the information about already destroyed ships
+    switch (length) {
+        case(5):
+            ui->createBattleshipButton->setDisabled(true);
+            ui->createBattleshipButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
+            ui->createBattleshipButton->show();
+            break;
+
+        case(4):
+    {       static int counter = 0;
+            counter++;
+            ui->createCruiserButton->setDisabled(true);
+            ui->createCruiserButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
+            ui->cruiserCounter->show();
+            ui->cruiserCounter->setText("x" + QString::number(counter));
+            break;
+    }
+
+        case(3):
+    {       static int counter = 0;
+            counter++;
+            ui->createDestroyerButton->setDisabled(true);
+            ui->createDestroyerButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
+            ui->destroyerCounter->show();
+            ui->destroyerCounter->setText("x" + QString::number(counter));
+            break;
+    }
+
+        case(2):
+    {       static int counter = 0;
+            counter++;
+            ui->createSubmarineButton->setDisabled(true);
+            ui->createSubmarineButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
+            ui->submarineCounter->show();
+            ui->submarineCounter->setText("x" + QString::number(counter));
+            break;
+    }
+    }
+}
+void battleships::status(char status){  // prints the information about current satus of the game
     ui->statusLabel->show();
     switch(status){
         case('p'):
@@ -412,6 +483,8 @@ void battleships::status(char status){
             break;
         case('c'):
             ui->statusLabel->setText("Connection to proxy established");
+            ui->clientRadioButton->setDisabled(true);
+            ui->serverRadioButton->setDisabled(true);
             break;
         case('i'):
             ui->statusLabel->setText("Invalid connection to proxy");
@@ -422,6 +495,7 @@ void battleships::status(char status){
             //break;
         case('t'):
             ui->statusLabel->setText("Your turn");
+            emit unblockRivalField();
             break;
         case('o'):
             ui->statusLabel->setText("Opponent's turn");
@@ -439,48 +513,6 @@ void battleships::status(char status){
         //case('s'):
             //ui->statusLabel->setText('The game begin');
 
-    }
-}
-//signal from logic about the length of the destroyed ship
-//is destroyed - displays the type of destroyed ship and the total number of destroyed ones
-void battleships::destroyedShips(int length){
-    static int counter = 0;
-    switch (length) {
-        case(5):
-            ui->createBattleshipButton->setDisabled(true);
-            ui->createBattleshipButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
-            ui->createBattleshipButton->show();
-            break;
-
-        case(4):
-    {
-            counter++;
-            ui->createCruiserButton->setDisabled(true);
-            ui->createCruiserButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
-            ui->cruiserCounter->show();
-            ui->cruiserCounter->setText("x" + QString::number(counter));
-            break;
-    }
-
-        case(3):
-    {
-            counter++;
-            ui->createDestroyerButton->setDisabled(true);
-            ui->createDestroyerButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
-            ui->destroyerCounter->show();
-            ui->destroyerCounter->setText("x" + QString::number(counter));
-            break;
-    }
-
-        case(2):
-    {
-            counter++;
-            ui->createSubmarineButton->setDisabled(true);
-            ui->createSubmarineButton->setStyleSheet("* { background-color: rgb(125, 0, 0)}");
-            ui->submarineCounter->show();
-            ui->submarineCounter->setText("x" + QString::number(counter));
-            break;
-    }
     }
 }
 
