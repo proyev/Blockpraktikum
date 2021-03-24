@@ -42,29 +42,32 @@ int main(int argc, char *argv[])
 
 //    //connection to network
 //    QWidget::connect(
-    QWidget::connect(&w, & ,
-                     player, &Player::SetOrientationSlot);
-    QWidget::connect(player, &Player::UnblockPlayerFieldSig,
-                     &battleships::unblockField);
-    QWidget::connect(&w, &battleships::createShip,
-                     player, &SetSelectedShipSlot);
-    QWidget::connect(&w, &battleships::positionPlayer,
-                     player, &Player::SetPlacingBeginCoordinates);
-    QWidget::connect(player, &Player::ShipPlaceValidationSig,
-                     //the reciever)
-    QWidget::connect(player, &Player::DrawShipSig,
-                     &w, &battleships::gameSetup);
-    QWidget::connect(player, &Player::BlockingSurfaceSig,
-                     &w, // some slot to save information about the further unblocking);
-    QWidget::connect(&w, //rivalmove,
-                     player, &Player::SetTargetSlot);
-    QWidget::connect(player, &Player::PlayerAttackResultSig,
-                     &w, &battleships::moveRival);
-    QWidget::connect(player, &Player::SunkShip,
-                     &w, &battleships::destroyedShips);
-    QWidget::connect(player, &Player::EnemyAttackResultGUISig,
-                     &w, &battleships::moveRivalInterpreter);
-    //move RivalInterpreter will emit signal to change turns
+
+    // ship creation
+//    QWidget::connect(&w, &battleships::shipOrientation,
+//                     player, &Player::SetOrientationSlot);
+//        QWidget::connect(&w, &battleships::createShip,
+//                         player, &SetSelectedShipSlot);
+//    QWidget::connect(player, &Player::UnblockPlayerFieldSig,
+//                     &battleships::unblockField);
+//    QWidget::connect(&w, &battleships::positionPlayer,
+//                     player, &Player::SetPlacingBeginCoordinates);
+//    QWidget::connect(player, &Player::ShipPlaceValidationSig,
+//                     &w, &battleships::placementValidation);
+//    QWidget::connect(player, &Player::DrawShipSig,
+//                     &w, &battleships::gameSetup);
+//    QWidget::connect(player, &Player::BlockingSurfaceSig,
+//                     &w, &battleships::unblockField);
+
+    // game phase
+//    QWidget::connect(&w, &battleships::positionRival,
+//                     player, &Player::SetTargetSlot);
+//    QWidget::connect(player, &Player::PlayerAttackResultSig,
+//                     &w, &battleships::movePlayerInterpreter);
+//    QWidget::connect(player, &Player::SunkShip,
+//                     &w, &battleships::destroyedShips);
+//    QWidget::connect(player, &Player::EnemyAttackResultGUISig,
+//                     &w, &battleships::moveRivalInterpreter);
 
 
     return a.exec();
