@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,13 +9,15 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    logic.cpp \
     main.cpp \
-    battleships.cpp
+    battleships.cpp \
+    nw.cpp \
+    battleShipLogic.cpp
 
 HEADERS += \
     battleships.h \
-    logic.h
+    nw.h \
+    battleShipLogic.hpp
 
 FORMS += \
     battleships.ui
