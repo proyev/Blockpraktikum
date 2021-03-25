@@ -5,8 +5,8 @@
 #include <QObject>
 #include <QPushButton>
 #include <string>
+#include "nw.h"
 
-QT_BEGIN_NAMESPACE
 namespace Ui { class battleships; }
 QT_END_NAMESPACE
 
@@ -15,6 +15,8 @@ class battleships : public QWidget
     Q_OBJECT
 
 public:
+    void setRivalName(QString name){_rivalName = name;};
+    QString getRivalName() {return _rivalName;};
     battleships(QWidget *parent = nullptr);
     ~battleships();
 
@@ -22,6 +24,7 @@ private:
     Ui::battleships *ui;
     QPushButton *_fieldPlayer[10][10];
     QPushButton *_fieldRival[10][10];
+    QString _rivalName;
 
 private slots:
             void horizontalOrientation();
@@ -56,6 +59,10 @@ private slots:
             void startGame();
             void disconnectSignal();
             void isClient(bool info);
+
+            void sendTextMessage(QString message);
+            void sendPlayerName(QString name);
+
 public slots:
             void gameSetup(int startX, int startY,
                           char orientation,
@@ -66,13 +73,17 @@ public slots:
             void turn(bool turn);
             void status(char status);
 
-            void connectionSatus(bool connection);
+            void connectionStatus(bool connection);
 
             void unblockPlayerField(int startX, int startY,
                                     int endX, int endY);
             void unblockRivalField();
             void movePlayerInterpreter(int posX, int posY, char status);
             void moveRivalInterpreter(int posX, int posY, char status);
+
+//            void nameRival(QString name);
+            void messageRival(QString message, Nw::messageSender s= Nw::messageSender::status);
+
 
 };
 #endif // BATTLESHIPS_H
