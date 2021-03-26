@@ -6,11 +6,11 @@ Nw::Nw(QObject *parent) : QObject(parent),
     _playerReady(false),
     _status(protocol::OFFLINE),
     _turn(turn::NONE),
-    _timeoutConnReq(10000)
+    _timeoutTimeConnReq(10000)
 {
     _InOutStream.setByteOrder(QDataStream::BigEndian);
     //Alle connects() innerhalb der klasse kommen hierherein
-    connect(timerConnReq,&QTimer::timeout,this,&Nw::timeoutConnReq);
+    connect(_timerConnReq,&QTimer::timeout,this,&Nw::_timeoutConnReq);
 }
 
 void Nw::connectToServer(QString adr, QString port){
@@ -40,19 +40,19 @@ void Nw::connectToServer(QString adr, QString port){
 
 
     connect(_socket, SIGNAL(connected()),
-             this, SLOT(enableConnection()) );
+             this, SLOT(_enableConnection()) );
     connect(_socket, SIGNAL(disconnected()),
-             this, SLOT(disconnected()) );
+             this, SLOT(_disconnected()) );
     connect(_socket, SIGNAL(error(QAbstractSocket::SocketError)),
-             this, SLOT(socketError()) );
+             this, SLOT(_socketError()) );
     connect(_socket, SIGNAL(destroyed()),
-             this, SLOT(closeConnection()) );
+             this, SLOT(_closeConnection()) );
 
 
 }
 
 void Nw::disconnectFromServer(){
-
+    emit displayMessage("Disconnecting from server.");
     _socket->disconnectFromHost();
     _status = protocol::OFFLINE;
     _turn = turn::NONE;
@@ -65,52 +65,54 @@ void Nw::toggleIsClient(bool isClient){
     }
     _isClient=isClient;
     if (_isClient){ // Falls man Client ist muss der Timer für die periodischen Spielstart befehle gestartet werden.
-        timerConnReq->start(0);
+        _timerConnReq->start(0);
     }
     std::cout<<"isClient is beeing called. We are now: "<<_isClient<<std::endl;
     displayMessage("You are now: "+ (QString)((_isClient) ? "Client" : "Server"));
 }
 
-void Nw::enableConnection(){
+void Nw::_enableConnection(){
     assert(_socket != nullptr);
-
-    emit connectionEstablished(true);
     emit displayMessage("Connected.");
     std::cout<<"connected to server"<<std::endl;
 
     _InOutStream.setDevice(_socket);
 
-    connect(_socket, SIGNAL(readyRead()), this, SLOT(processInput()));
+    connect(_socket, SIGNAL(readyRead()), this, SLOT(_processInput()));
 
     _status = protocol::PROXYCONNECTED;
 
     //timer starten wenn man sich zum ersten mal mit dem server verbindet.
-    timerConnReq->start(_timeoutConnReq);
+    //_timerConnReq->start(_timeoutTimeConnReq);
+    _timeoutConnReq();
+
+    emit connectionEstablished(true);
 
 }
 
-void Nw::disconnected(){
+void Nw::_disconnected(){
     emit displayMessage("Disconnecting/Deleting Socket");
     _socket->deleteLater();
     _status = protocol::OFFLINE;
     _turn = turn::NONE;
 }
 
-void Nw::socketError(){
+void Nw::_socketError(){
     emit displayMessage("Connection closed or could not connect.");
     _socket->deleteLater();
     _status = protocol::OFFLINE;
     _turn = turn::NONE;
 }
 
-void Nw::closeConnection(){
+void Nw::_closeConnection(){
+     emit displayMessage("You are now offline.");
      _InOutStream.setDevice(nullptr);
-    emit connectionEstablished(false);
+     emit connectionEstablished(false);
      _status = protocol::OFFLINE;
      _turn = turn::NONE;
 }
 
-void Nw::processInput(){
+void Nw::_processInput(){
     while(_InOutStream.atEnd() == false) {
         {
         if(_socket->bytesAvailable() > _CONNECTION_THRESHOLD){
@@ -196,7 +198,7 @@ void Nw::processInput(){
             //emit recvGameParam(param);
 
             //da wir aber mit statischen param arbeiten werde ich den check innerhalb der klasse machen:
-            checkParam(param);
+            _checkParam(param);
 
             break;
 
@@ -223,7 +225,7 @@ void Nw::processInput(){
             break;
 
         case 0x04: //Der Gegner schiesst auf uns.
-
+            {
             if (cmdLength != 0x02){
                 displayMessage("Protokollerror cmd 0x04: Schuss empfangen aber Format ungültig.");
                 _socket->abort();
@@ -250,6 +252,7 @@ void Nw::processInput(){
             _turn = turn::WERESPOND;
             emit displayMessage("Schuss auf uns.");
             emit shotIncoming(c);
+            }
             break;
 
         case 0x10: //Antwort auf Anfragen
@@ -281,7 +284,7 @@ void Nw::processInput(){
                    break;
                case 0x03:
                    emit displayMessage("repeating the last message");
-                   _repeatLastMsg();
+                   //_repeatLastMsg();
                    break;
                case 0x04:
                    emit displayMessage("Protokolleror 0x10:We took too long responding. Timeout.");
@@ -318,7 +321,7 @@ void Nw::processInput(){
                     break;
                 case 0x03:
                     emit displayMessage("repeating the last message");
-                    _repeatLastMsg();
+                    //_repeatLastMsg();
                     break;
                 case 0x04:
                     emit displayMessage("We took too long responding. Timeout.");
@@ -395,7 +398,11 @@ void Nw::processInput(){
                     sunkenShip[i] = {(int)x,(int)y};
                 }
                 if(islegitim){
+                    if ((Support::FIELD_STATUS)shotResult == Support::HIT_AND_SUNK_PLAYER){
+                        _gameOver(true);
+                    }
                     emit recvShotResponse(( Support::FIELD_STATUS)shotResult,sunkenShip);
+
                 }
                 break;
             }
@@ -487,6 +494,10 @@ void Nw::shotResponse( Support::FIELD_STATUS shotResult,std::vector<struct Suppo
         _InOutStream<<(quint8)value.X<<(quint8)value.Y;
     }
 
+    if (legitimateShot && (shotResult == Support::HIT_AND_SUNK_PLAYER)){
+        _gameOver(false);
+    }
+
 
     //Falls das Spiel nicht beendet ist:
 
@@ -495,7 +506,7 @@ void Nw::shotResponse( Support::FIELD_STATUS shotResult,std::vector<struct Suppo
 
 }
 
-void Nw::startGameRequest(){
+void Nw::_startGameRequest(){
     if (_status != protocol::PREGAME){
         std::cout<<"Not allowed to call this method"<<std::endl;
         return;
@@ -516,6 +527,10 @@ void Nw::startGameRequest(){
 void Nw::sendParam(){
     if (_status != protocol::PROXYCONNECTED){
         std::cout<<"you are not supposed to call this function now."<<std::endl;
+        return;
+    }
+    else if (_isClient){
+        std::cout<<"Not our turn to send Param. We are Client. Server sends param."<<std::endl;
         return;
     }
     std::cout<<"sendParam is beeing called..."<<std::endl;
@@ -583,7 +598,7 @@ void Nw::togglePlayerReady(){
     }
     _playerReady=!_playerReady;
     if(_playerReady){
-        startGameRequest(); //Sendet eine Spielbeginn Anfrage an den anderen Spieler.
+        _startGameRequest(); //Sendet eine Spielbeginn Anfrage an den anderen Spieler.
     }
 }
 
@@ -621,8 +636,8 @@ bool Nw::_assertCmdLength() { //Now checks whether the cmd is fully here. -> may
     }
 
 
-    std::cout<<"-assertCmdLength: "<<peeked[1]<<","<<(quint16)peeked[1]<<std::endl;
-    std::cout<<"_assertCmdLength peeked cmdLength of: "<<cmdLength<<std::endl;
+    //std::cout<<"-assertCmdLength: "<<peeked[1]<<","<<(quint16)peeked[1]<<std::endl;
+    //std::cout<<"_assertCmdLength peeked cmdLength of: "<<cmdLength<<std::endl;
 
     return _waitForReadyRead(cmdLength);
 }
@@ -648,23 +663,22 @@ void Nw::sendPlayerName(QString playerName){
     _InOutStream << (quint8)0x82 << (quint8)0x00 << playerName;
 }
 
-void  Nw::_repeatLastMsg(){
-    static int count = 0;
-    count += 1;
-}
+//void  Nw::_repeatLastMsg(){
+//    static int count = 0;
+//    count += 1;
+//}
 
-void Nw::timeoutConnReq(){
+void Nw::_timeoutConnReq(){
 
     if (_status == protocol::PROXYCONNECTED && _isClient){
         emit displayMessage("ConnReq is send periodically.");
         connectToPlayer();
-        timerConnReq->start(_timeoutConnReq);
+        _timerConnReq->start(_timeoutTimeConnReq);
         return;
     }
-    timerConnReq->stop();
+    _timerConnReq->stop();
 }
 
-void Nw::_cmdInvalid(){}
 
 void Nw::_ignoreBytesOnSocket(int numOfBytes){
     quint8 byte;
@@ -673,7 +687,7 @@ void Nw::_ignoreBytesOnSocket(int numOfBytes){
     }
 }
 
-void Nw::checkParam(std::array<quint8,6> param){
+void Nw::_checkParam(std::array<quint8,6> param){
     std::array<quint8,6> standartParam = {0x0A,0x0A,0x01,0x02,0x03,0x04};
     if (param == standartParam){
         //parameter werden von uns akzeptiert.
@@ -687,8 +701,17 @@ void Nw::checkParam(std::array<quint8,6> param){
     }
 }
 
+void Nw::_gameOver(bool weWon){
+    _status = protocol::PROXYCONNECTED;
+    _playerReady = false;
+    _turn = turn::NONE;
+
+    std::cout<<"Nw:gameover called"<<std::endl;
+    displayMessage( weWon ? "Network: We won" : "Network: We lost.");
+}
 
 Nw::~Nw(){
     delete _socket;
-    delete timerConnReq;
+    delete _timerConnReq;
+    //delete timerLastMsgRecv;
 };
