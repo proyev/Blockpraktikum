@@ -15,4 +15,4 @@ course/ contatins the several hw assignments done during the course of the lectu
 
 # project 
 
-/project contains the final assignment, namely, as game of Battleships 
+/project contains the final assignment, namely, game "Battleships" 
