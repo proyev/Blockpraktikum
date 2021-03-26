@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+INCPATH       = -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = schiffeversenken1.0.0
 DISTDIR = /home/jason/Desktop/Courses/Uni-stuff/Block\ C++/project/CPP_WS2021_G06/schiffeversenken/.tmp/schiffeversenken1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
+LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,10 +53,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = main.cpp \
-		battleships.cpp moc_battleships.cpp
+		battleships.cpp \
+		nw.cpp \
+		battleShipLogic.cpp moc_battleships.cpp \
+		moc_nw.cpp \
+		moc_battleShipLogic.cpp
 OBJECTS       = main.o \
 		battleships.o \
-		moc_battleships.o
+		nw.o \
+		battleShipLogic.o \
+		moc_battleships.o \
+		moc_nw.o \
+		moc_battleShipLogic.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -113,6 +121,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -131,8 +140,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		schiffeversenken.pro battleships.h main.cpp \
-		battleships.cpp
+		schiffeversenken.pro battleships.h \
+		nw.h \
+		battleShipLogic.hpp main.cpp \
+		battleships.cpp \
+		nw.cpp \
+		battleShipLogic.cpp
 QMAKE_TARGET  = schiffeversenken
 DESTDIR       = 
 TARGET        = schiffeversenken
@@ -200,6 +213,7 @@ Makefile: schiffeversenken.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -276,6 +290,7 @@ Makefile: schiffeversenken.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/q
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -310,8 +325,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents battleships.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp battleships.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents battleships.h nw.h battleShipLogic.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp battleships.cpp nw.cpp battleShipLogic.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents battleships.ui $(DISTDIR)/
 
 
@@ -344,13 +359,26 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++1z -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_battleships.cpp
+compiler_moc_header_make_all: moc_battleships.cpp moc_nw.cpp moc_battleShipLogic.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_battleships.cpp
+	-$(DEL_FILE) moc_battleships.cpp moc_nw.cpp moc_battleShipLogic.cpp
 moc_battleships.cpp: battleships.h \
+		nw.h \
+		battleShipLogic.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include battleships.h -o moc_battleships.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include battleships.h -o moc_battleships.cpp
+
+moc_nw.cpp: nw.h \
+		battleShipLogic.hpp \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include nw.h -o moc_nw.cpp
+
+moc_battleShipLogic.cpp: battleShipLogic.hpp \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/jason/Desktop/Courses/Uni-stuff/Block C++/project/CPP_WS2021_G06/schiffeversenken' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include battleShipLogic.hpp -o moc_battleShipLogic.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -373,15 +401,32 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-main.o: main.cpp battleships.h
+main.o: main.cpp battleships.h \
+		nw.h \
+		battleShipLogic.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 battleships.o: battleships.cpp battleships.h \
+		nw.h \
+		battleShipLogic.hpp \
 		ui_battleships.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o battleships.o battleships.cpp
 
+nw.o: nw.cpp nw.h \
+		battleShipLogic.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nw.o nw.cpp
+
+battleShipLogic.o: battleShipLogic.cpp battleShipLogic.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o battleShipLogic.o battleShipLogic.cpp
+
 moc_battleships.o: moc_battleships.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_battleships.o moc_battleships.cpp
+
+moc_nw.o: moc_nw.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_nw.o moc_nw.cpp
+
+moc_battleShipLogic.o: moc_battleShipLogic.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_battleShipLogic.o moc_battleShipLogic.cpp
 
 ####### Install
 
