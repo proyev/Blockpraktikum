@@ -1,5 +1,4 @@
 #include"battleShipLogic.hpp"
-#include <iostream>
 // FUNCTIONS-----------------------------------------------------------------------------------------------------
 void Print2Darray(Player* player)
 {
@@ -8,10 +7,21 @@ void Print2Darray(Player* player)
 	{
 		for (size_t j = 0; j < player->Parameters->FieldSizeY;j++)
 		{
-			std::cout << player->_BoardOwn[j][i].first << "\t" << std::flush;
+			int temp = player->_BoardOwn[j][i].first;
+			std::cout <<temp << "\t" << std::flush;
 		};
 		std::cout << "\n" << std::endl;
 	};
+}
+
+bool findCordInVec(const std::vector<Support::coordinates>& vec, const Support::coordinates& item)
+{
+	bool temp = false;
+	for (Support:: coordinates v : vec)
+	{
+		if ((item.X == v.X) && (item.Y == v.Y))  temp= true;
+	}
+	return temp;
 }
 
 //chech if the path between 2 coordinates is corresponding to the selected ship size and if all the path has the same status(HIT,MISS,WATER...)
@@ -20,15 +30,17 @@ bool CheckPath(const uint8_t& size,
 	Support::Orientation& orientation, 
 	std::vector<std::vector<BoardCase>> board_own,
 	Support::coordinates &block_coor_1, 
-	Support::coordinates& block_coor_2)
+	Support::coordinates& block_coor_2,
+	std::vector<Support::coordinates> & blocked_area)
 {
-	for (size_t i = 0; i < size;i++)
+	for (int  i = 0; i < size;i++)
 	{
 		if (orientation == Support::VERTICAL)
 		{
 			if (((begin_field.X >= board_own.size()) || (begin_field.Y + i >= board_own[i].size())))
 				return false;
-			if((board_own[begin_field.X][begin_field.Y + i].first != Support::WATER))
+			Support::coordinates item = { begin_field.X , begin_field.Y + i };
+			if (findCordInVec(blocked_area,item))
 				return false;
 			if (i == size-1)
 			{
@@ -43,7 +55,7 @@ bool CheckPath(const uint8_t& size,
 				if (block_coor_1.Y >= board_own[i].size())
 					block_coor_1.Y--;
 				block_coor_2.X = begin_field.X  + 1;
-				block_coor_2.Y = begin_field.Y+ i + 1;
+				block_coor_2.Y = begin_field.Y+ size;
 				if (block_coor_2.X >= board_own.size())
 					block_coor_2.X--;
 				if (block_coor_2.Y >= board_own[i].size())
@@ -59,7 +71,8 @@ bool CheckPath(const uint8_t& size,
 		{
 			if((begin_field.X + i >= board_own.size()) || (begin_field.Y >= board_own[i].size()))
 				return false;
-			if (((board_own[begin_field.X + i][begin_field.Y].first != Support::WATER)))
+			Support::coordinates item = { begin_field.X+ i , begin_field.Y  };
+			if (findCordInVec(blocked_area, item))
 				return false;
 			if (i == size-1)
 			{
@@ -73,7 +86,7 @@ bool CheckPath(const uint8_t& size,
 					block_coor_1.X--;
 				if (block_coor_1.Y >= board_own[i].size())
 					block_coor_1.Y--;
-				block_coor_2.X =begin_field.X + i+1;
+				block_coor_2.X =begin_field.X + size;
 				block_coor_2.Y = begin_field.Y+1;
 				if (block_coor_2.X >= board_own.size())
 					block_coor_2.X--;
@@ -87,6 +100,13 @@ bool CheckPath(const uint8_t& size,
 		}
 		
 				 
+	}
+	for (size_t i = block_coor_1.X; i <= block_coor_2.X;i++)
+	{
+		for (size_t j = block_coor_1.Y; j <= block_coor_2.Y;j++)
+		{
+			blocked_area.emplace_back(i, j);
+		}
 	}
 	return true;
 }
@@ -160,10 +180,10 @@ Player::Player()
 		std::vector< Support::FIELD_STATUS>temp2;
 		for (size_t j = 0;j < Parameters->FieldSizeY;j++)
 		{
-			temp1.emplace_back(Support::WATER, nullptr);
-			temp2.emplace_back(Support::WATER);
+			temp1.emplace_back(Support::WATER, nullptr);//to fill player's board initially
+			temp2.emplace_back(Support::WATER);// to fill local enemy board initially
 		}
-		_BoardOwn.push_back(temp1);
+		_BoardOwn.push_back(temp1);// push temp 1 inside it 
 		_BoardEnemy.push_back(temp2);
 	}
 	_PlayerMaxHealth = 30;
@@ -172,6 +192,7 @@ Player::Player()
 	_Target = Support::coordinates(0,0);
 	_AttackResultEnemy=Support::MISS;
 	_AttackResultPlayer = Support::MISS;
+	_AttackEnemy = Support::coordinates(0,0);
 }
 void Player::UpdateEnemy()
 {
@@ -185,6 +206,11 @@ bool Player::UpdatePlayer(std::vector<Support::coordinates> &sunk_ship_base)
 {
 	bool temp = false;
     _AttackResultEnemy = Support::MISS;
+	if (_AttackEnemy.X <0 ||_AttackEnemy.X >= Parameters->FieldSizeX ||_AttackEnemy.Y <0 ||_AttackEnemy.Y >= Parameters->FieldSizeY  )
+	{
+			_AttackResultEnemy = Support::NONVALID ;
+			return false ; 
+    }
 	if (_BoardOwn[_AttackEnemy.X][_AttackEnemy.Y].first == Support::SHIP)
 	{
 		_BoardOwn[_AttackEnemy.X][_AttackEnemy.Y].first = Support::HIT;
@@ -205,6 +231,8 @@ bool Player::UpdatePlayer(std::vector<Support::coordinates> &sunk_ship_base)
 			sunk_ship_base = _BoardOwn[_AttackEnemy.X][_AttackEnemy.Y].second->_ShipCoordinatesVector;
 			temp = true;
 		}
+		
+
 	}
 	return temp;
 }
@@ -213,7 +241,7 @@ bool Player::CheckAndPlaceShip(Support::coordinates& block_coor_1, Support::coor
 	uint8_t size = Parameters->SizeSelected;
 	Support::Orientation orientation = Parameters->orientation;
 	Support::coordinates begin_field = Parameters->CoordinatesSelected;
-	if (CheckPath(size, begin_field, orientation, _BoardOwn, block_coor_1, block_coor_2) == true)
+	if (CheckPath(size, begin_field, orientation, _BoardOwn, block_coor_1, block_coor_2,Parameters->BlockedCases) == true)
 	{
 		ShipPlacement(size, orientation, begin_field, _Ships, _BoardOwn);
 		return true;
@@ -263,6 +291,7 @@ void Player::PlayerAttackResultSlot(Support::FIELD_STATUS result, std::vector<Su
 {
 	_AttackResultPlayer = result;
 	if (result == Support::MISS)
+
 		emit PlayerAttackResultSig(_Target.X, _Target.Y, 'm');
 	if (result == Support::HIT)
 		emit PlayerAttackResultSig(_Target.X, _Target.Y, 'h');
@@ -275,6 +304,7 @@ void Player::PlayerAttackResultSlot(Support::FIELD_STATUS result, std::vector<Su
 
 void Player::EnemyAttackSlot(Support::coordinates enemy_target)
 {
+
 	_AttackEnemy = enemy_target;
 	char result_enemy;
 	std::vector<Support::coordinates> sunk_ship_coordinates;
@@ -314,7 +344,6 @@ void Player::EnemyAttackSlot(Support::coordinates enemy_target)
         }
         emit EnemyAttackResultSig(_AttackResultEnemy, sunk_ship_coordinates);
         emit EnemyAttackResultGUISig(_AttackEnemy.X, _AttackEnemy.Y, result_enemy);
-    }
+	}
 
 }
-
