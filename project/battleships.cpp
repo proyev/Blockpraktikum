@@ -10,12 +10,13 @@
 #include <vector>
 #include "nw.h"
 
+
 battleships::battleships(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::battleships)
 {
     ui->setupUi(this);
-
+    std::cout<<"konstruktor battleships"<<std::endl;
     //create two fields of buttons
     for (int i=0; i<10; i++){
         for (int j=0; j<10; j++){
@@ -33,14 +34,16 @@ battleships::battleships(QWidget *parent)
             _fieldRival[i][j]->show();
             _fieldPlayer[i][j]->setDisabled(true);
             _fieldRival[i][j]->setDisabled(true);
+            //when clicked - will send the coordinates to the logical part - required only for ship placement
             connect(_fieldPlayer[i][j], &QPushButton::clicked,
                     this, [=](){
                             emit positionPlayer(i, j);
-                        });//when clicked - will send the coordinates to the logical part - required only for ship placement
+                        });
+            //when clicked on the rival field, will get the position of the button clicked
             connect(_fieldRival[i][j], &QPushButton::clicked,
                     this, [=](){
                             emit positionRival(i, j);
-            });//when clicked on the rival field, will get the position of the button clicked
+            });
         }
     }
     battleships::setMinimumSize(900, 300);
@@ -81,7 +84,7 @@ battleships::battleships(QWidget *parent)
     connect(ui->startButton, &QPushButton::clicked,
             this,[&](){
         emit status('a');
-        emit startGame();//if doesn't work - try by-value
+        emit startGame();
     });
     connect(ui->startButton, &QPushButton::clicked,
             ui->playerHP, &QPushButton::show);
@@ -89,6 +92,7 @@ battleships::battleships(QWidget *parent)
             ui->rivalHP, &QPushButton::show);
     connect(this, &battleships::playerTurn,
             this, &battleships::unblockRivalField);
+
     ui->connectButton->setDisabled(true);
     ui->disconnectButton->hide();
     connect(ui->connectButton, &QPushButton::clicked,
@@ -96,15 +100,30 @@ battleships::battleships(QWidget *parent)
         QString ip = ui->ipInput->text();
         QString port = ui->portInput->text();
         if (ip != "" && port != "") emit connectSignal(ip, port);
-
     });
-
-
-
     connect(ui->disconnectButton, &QPushButton::clicked,
             this, [&](){
         ui->disconnectButton->hide();
         ui->connectButton->show();
+        ui->clientRadioButton->setAutoExclusive(false);
+        ui->serverRadioButton->setAutoExclusive(false);
+        ui->clientRadioButton->setChecked(false);
+        ui->serverRadioButton->setChecked(false);
+        ui->clientRadioButton->setDisabled(false);
+        ui->serverRadioButton->setDisabled(false);
+        ui->clientRadioButton->setAutoExclusive(true);
+        ui->serverRadioButton->setAutoExclusive(true);
+        ui->verticalOptionButton->setDisabled(true);
+        ui->horizontalOptionButton->setDisabled(true);
+        ui->verticalOptionButton->setAutoExclusive(false);
+        ui->horizontalOptionButton->setAutoExclusive(false);
+        ui->verticalOptionButton->setChecked(false);
+        ui->horizontalOptionButton->setChecked(false);
+        ui->verticalOptionButton->setAutoExclusive(true);
+        ui->horizontalOptionButton->setAutoExclusive(true);
+        QMessageBox::critical(this, "Network", "Disconnected");
+        ui->chatMessage->setDisabled(true);
+        ui->nicknameInput->setDisabled(true);
         emit disconnectSignal();
     });
     connect(ui->clientRadioButton, &QRadioButton::clicked,
@@ -130,7 +149,6 @@ battleships::battleships(QWidget *parent)
             this, &battleships::updatePlayerHP);
     connect(this, &battleships::rivalHP,
             this, &battleships::updateRivalHP);
-
     connect(this, &battleships::statusSignal,
             this, &battleships::status);
 
@@ -140,10 +158,9 @@ battleships::battleships(QWidget *parent)
             this, [&](){
         ui->saveNameButton->hide();
         QString name = ui->nicknameInput->text();
-        ui->statusLabel->setText(name);
         ui->nicknameInput->setDisabled(true);
         emit sendPlayerName(name);
-    });//change to slot from logic
+    });
     connect(ui->chatButton, &QPushButton::clicked,
             this, [&](){
         ui->chatButton->hide();
@@ -161,7 +178,6 @@ battleships::battleships(QWidget *parent)
          ui->chatBox->append(message);
          emit sendTextMessage(message);
     });
-   // connect(ui->)
     connect(ui->hideChatButton, &QPushButton::clicked,
             this, [&](){
         ui->chatButton->show();
@@ -178,8 +194,6 @@ battleships::battleships(QWidget *parent)
             this, &battleships::blockRivalField);
     connect(this, &battleships::unblockField,
             this, &battleships::unblockRivalField);
-    //connect(this, &battleships::unblockField,
-     //       this, &battleships::unblockPlayerField); - should be first call from logic
 }
 
 void battleships::horizontalOrientation(){
@@ -356,9 +370,6 @@ void battleships::unblockPlayerField(int startX, int startY, int endX, int endY)
             }
         }
     }
-
-    //block specified region
-
 }
 //block the rival's turn - block his field to avoid click-issue
 void battleships::blockRivalField(){
@@ -392,8 +403,15 @@ void battleships::moveRivalInterpreter(int posX, int posY, char status){
             battleships::_fieldPlayer[posX][posY]->setStyleSheet("* { background-color: rgb(0, 0, 255)}");
             break;
     }
-    emit statusSignal('t');
-    emit playerTurn();
+    if (ui->playerHP->isHidden()){
+        ui->statusLabel->hide();
+        emit blockPlayerField();
+        emit blockRivalField();
+    }else{
+        emit statusSignal('t');
+        emit playerTurn();
+    }
+    std::cout << "Rival Interpreter" << std::endl;
 }
 void battleships::movePlayerInterpreter(int posX, int posY, char status){
     switch (status) {
@@ -405,7 +423,14 @@ void battleships::movePlayerInterpreter(int posX, int posY, char status){
             battleships::_fieldRival[posX][posY]->setStyleSheet("* { background-color: rgb(0, 0, 255)}");
             break;
     }
-   emit statusSignal('o');
+    if (ui->rivalHP->isHidden()){
+        ui->statusLabel->hide();
+        emit blockPlayerField();
+        emit blockRivalField();
+    }else{
+       emit statusSignal('o');
+    }
+   std::cout << "Player interpreter" << std::endl;
 }
 
 //for network connectivity
@@ -423,25 +448,22 @@ void battleships::connectionStatus(bool connection){
         emit statusSignal('i');
     }
 }
-//void battleships::nameRival(QString name){
-//    battleships::setRivalName(name);
-//}
 void battleships::messageRival(QString message, Nw::messageSender s){
-    //QString name = "<" + battleships::getRivalName() + ">";
-    //message = name + " " + message;
     ui->chatBox->setTextColor(QColor(0, 160, 160));
     ui->chatBox->append(message);
+    Nw::messageSender status = s;
     if (ui->hideChatButton->isHidden()){
         ui->chatButton->setStyleSheet("* { background-color: rgb(0, 160, 160)}");
     }
 }
-
 
 //for gameplay
 void battleships::turn(bool turn){ // change of the turns - start of the game only
     if (turn){
         QMessageBox::information(this, "Game", "You begin the game!");
         emit status('t');
+    }else{
+        emit status('o');
     }
 }
 void battleships::destroyedShips(int length){ // will print the information about already destroyed ships
@@ -513,7 +535,6 @@ void battleships::status(char status){  // prints the information about current 
             break;
     }
 }
-
 //updates hp bar
 void battleships::updatePlayerHP(){
     static int damage = 0;
@@ -560,6 +581,14 @@ void battleships::updateRivalHP(){
 
 battleships::~battleships()
 {
+    std::cout<<"destruktor battleships"<<std::endl;
     delete ui;
+    //hinzugefügt:
+    for (int i=0; i<10; i++){
+        for (int j=0; j<10; j++){
+    delete _fieldPlayer[i][j];
+    delete _fieldRival[i][j];
 }
+    }
+        }
 
