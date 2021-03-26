@@ -10,11 +10,8 @@ int main(int argc, char *argv[])
     w->show();
 
 
-    Player* player = new Player();
-    Nw* nw = new Nw();
-
-
-
+    Player* player = new Player;
+    Nw* nw = new Nw;
 
     // -----------Alle "connect()" die slots und signals von versch. Klassen verbinden. ---------------------------------
 
@@ -29,7 +26,7 @@ int main(int argc, char *argv[])
     //QObject::connect(w,&battleships::sendParamSignal,nw,&Nw::sendParam);
     //QObject::connect(w,&battleships::connectToPlayer,nw,&Nw::connectToPlayer);
     QObject::connect(w,&battleships::sendTextMessage,nw,&Nw::sendTextMessage);
-    QObject::connect(w,&battleships::sendPlayerName,nw,&Nw::sendPlayerName);
+//    QObject::connect(w,&battleships::sendPlayerName,nw,&Nw::sendPlayerName);
 
 
     //-----------------------------NW -> GUI -----------------------------------------
